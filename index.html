@@ -287,6 +287,58 @@
     .date-block .day-num { font-size: 1.35rem; }
     .game-matchup { font-size: 0.85rem; }
     .badge { font-size: 0.62rem; padding: 2px 7px; }
+    .cal-btn { padding: 3px 7px; font-size: 0.62rem; }
+  }
+
+  .cal-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .cal-btn:hover {
+    border-color: #aaa;
+    color: var(--text);
+    background: #fff;
+  }
+
+  .download-all-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 4px 24px 0;
+  }
+
+  .download-all-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .download-all-btn:hover {
+    border-color: #aaa;
+    box-shadow: var(--shadow);
   }
 </style>
 </head>
@@ -306,6 +358,10 @@
 <div class="legend">
   <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Golden Bears</div>
   <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados</div>
+</div>
+
+<div class="download-all-wrap">
+  <button class="download-all-btn" onclick="downloadAllIcs()">📅 Add All Games to Calendar</button>
 </div>
 
 <div class="timeline" id="timeline"></div>
@@ -410,6 +466,8 @@ function renderGames(filter = 'all') {
 
     const sportIcon = g.sport === 'baseball' ? '⚾' : '⚽';
 
+    const gameIndex = games.indexOf(g);
+
     card.innerHTML = `
       <div class="date-block">
         <div class="day-name">${g.dayName}</div>
@@ -422,6 +480,7 @@ function renderGames(filter = 'all') {
           <span>🕐 ${g.time}</span>
           <span>📍 ${g.location}</span>
         </div>
+        <button class="cal-btn" onclick="event.stopPropagation(); downloadSingleGame(${gameIndex})">📅 Add to Cal</button>
       </div>
       <div class="badge ${g.kid}">${sportIcon} ${g.kid === 'tommy' ? 'Tommy' : 'Emma'}</div>
     `;
@@ -433,6 +492,99 @@ function renderGames(filter = 'all') {
 function highlightTeam(matchup, kid) {
   const team = kid === 'tommy' ? 'Golden Bears' : 'Tornados';
   return matchup.replace(team, `<span class="team-name">${team}</span>`);
+}
+
+// === iCal helpers ===
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function gameToIcsDatetime(g) {
+  // Parse "2026-04-11" and "9:00 AM" into iCal DTSTART/DTEND (1.5hr duration)
+  const [year, month, day] = g.date.split('-').map(Number);
+  const mins = timeToMinutes(g.time);
+  const startH = Math.floor(mins / 60);
+  const startM = mins % 60;
+  const endMins = mins + 90; // assume 1.5 hour games
+  const endH = Math.floor(endMins / 60);
+  const endM = endMins % 60;
+
+  const dtstart = `${year}${pad2(month)}${pad2(day)}T${pad2(startH)}${pad2(startM)}00`;
+  const dtend = `${year}${pad2(month)}${pad2(day)}T${pad2(endH)}${pad2(endM)}00`;
+  return { dtstart, dtend };
+}
+
+function gameToVevent(g) {
+  const { dtstart, dtend } = gameToIcsDatetime(g);
+  const kidName = g.kid === 'tommy' ? 'Tommy' : 'Emma';
+  const sportIcon = g.sport === 'baseball' ? '⚾' : '⚽';
+  const summary = `${sportIcon} ${kidName}: ${g.matchup}`;
+  const uid = `${g.date}-${g.time.replace(/[: ]/g,'')}-${g.kid}@gamedayschedule`;
+
+  return [
+    'BEGIN:VEVENT',
+    `DTSTART;TZID=America/New_York:${dtstart}`,
+    `DTEND;TZID=America/New_York:${dtend}`,
+    `SUMMARY:${summary}`,
+    `LOCATION:${g.location}`,
+    `UID:${uid}`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
+    'END:VEVENT'
+  ].join('\r\n');
+}
+
+function makeIcsFile(vevents) {
+  const cal = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//GameDay//Schedule//EN',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VTIMEZONE',
+    'TZID:America/New_York',
+    'BEGIN:DAYLIGHT',
+    'TZOFFSETFROM:-0500',
+    'TZOFFSETTO:-0400',
+    'DTSTART:19700308T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+    'TZNAME:EDT',
+    'END:DAYLIGHT',
+    'BEGIN:STANDARD',
+    'TZOFFSETFROM:-0400',
+    'TZOFFSETTO:-0500',
+    'DTSTART:19701101T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+    'TZNAME:EST',
+    'END:STANDARD',
+    'END:VTIMEZONE',
+    ...vevents,
+    'END:VCALENDAR'
+  ].join('\r\n');
+  return cal;
+}
+
+function downloadIcs(content, filename) {
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function downloadSingleGame(index) {
+  const g = games[index];
+  const vevent = gameToVevent(g);
+  const ics = makeIcsFile([vevent]);
+  const kidName = g.kid === 'tommy' ? 'Tommy' : 'Emma';
+  downloadIcs(ics, `${kidName}-${g.date}.ics`);
+}
+
+function downloadAllIcs() {
+  const vevents = games.map(g => gameToVevent(g));
+  const ics = makeIcsFile(vevents);
+  downloadIcs(ics, 'all-games-spring-2026.ics');
 }
 
 function filterGames(filter) {
