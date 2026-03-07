@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Day Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tommy: #2563eb;
+    --tommy-light: #dbeafe;
+    --tommy-mid: #93bbfd;
+    --emma: #e85d75;
+    --emma-light: #fde4e9;
+    --emma-mid: #f5a3b5;
+    --bg: #faf9f7;
+    --card-bg: #ffffff;
+    --text: #1e1e1e;
+    --text-secondary: #6b7280;
+    --border: #e8e6e1;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    text-align: center;
+    padding: 48px 24px 20px;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .filter-btn:hover { border-color: #ccc; }
+
+  .filter-btn.active-all {
+    background: var(--text);
+    color: white;
+    border-color: var(--text);
+  }
+
+  .filter-btn.active-tommy {
+    background: var(--tommy);
+    color: white;
+    border-color: var(--tommy);
+  }
+
+  .filter-btn.active-emma {
+    background: var(--emma);
+    color: white;
+    border-color: var(--emma);
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 14px 24px 4px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.tommy { background: var(--tommy); }
+  .legend-dot.emma { background: var(--emma); }
+
+  /* Timeline */
+  .timeline {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  .month-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    padding: 24px 0 10px 4px;
+  }
+
+  .month-label:first-child { padding-top: 8px; }
+
+  .game-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+    animation: fadeUp 0.35s ease both;
+    border-left: 4px solid transparent;
+  }
+
+  .game-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  .game-card.tommy { border-left-color: var(--tommy); }
+  .game-card.emma { border-left-color: var(--emma); }
+
+  .game-card.hidden {
+    display: none;
+  }
+
+  .game-card.past {
+    opacity: 0.45;
+  }
+
+  .date-block {
+    min-width: 52px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .date-block .day-name {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+
+  .date-block .day-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text);
+  }
+
+  .game-card.tommy .date-block .day-num { color: var(--tommy); }
+  .game-card.emma .date-block .day-num { color: var(--emma); }
+
+  .divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .game-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .game-matchup {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .game-matchup .team-name {
+    font-weight: 700;
+  }
+
+  .game-meta {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    font-weight: 400;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+
+  .game-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .badge.tommy {
+    background: var(--tommy-light);
+    color: var(--tommy);
+  }
+
+  .badge.emma {
+    background: var(--emma-light);
+    color: var(--emma);
+  }
+
+  .no-games {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Same-day cluster */
+  .same-day-note {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--tommy-light), var(--emma-light));
+    color: var(--text);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 6px;
+    margin-left: 4px;
+  }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 2.4rem; }
+    .game-card { padding: 14px 14px; gap: 10px; }
+    .date-block { min-width: 44px; }
+    .date-block .day-num { font-size: 1.35rem; }
+    .game-matchup { font-size: 0.85rem; }
+    .badge { font-size: 0.62rem; padding: 2px 7px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Game Day!</h1>
+  <p>Spring 2026 &middot; Tommy &amp; Emma's schedules</p>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active-all" onclick="filterGames('all')">All Games</button>
+  <button class="filter-btn" onclick="filterGames('tommy')">Tommy ⚾</button>
+  <button class="filter-btn" onclick="filterGames('emma')">Emma ⚽</button>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Golden Bears</div>
+  <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados</div>
+</div>
+
+<div class="timeline" id="timeline"></div>
+
+<script>
+const games = [
+  // === EMMA — SOCCER (Tornados) — Apex Nature Park Field #2, 2500 Evans Rd ===
+  { date: "2026-03-28", dayName: "Sat", day: 28, month: "March", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Monsoon", homeAway: "Home", location: "Apex Nature Park, Field #2" },
+  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Firestorm", homeAway: "Home", location: "Apex Nature Park, Field #2" },
+  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tsunami vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
+  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Earthquake", homeAway: "Home", location: "Apex Nature Park, Field #2" },
+  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Monsoon vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
+  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Firestorm vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
+  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Tsunami", homeAway: "Home", location: "Apex Nature Park, Field #2" },
+  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Volcanoes vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
+
+  // === TOMMY — BASEBALL (Golden Bears) — Baucom Elementary, 400 Hunter St ===
+  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Tar Heels vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hokies", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Fighting Irish vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-04-28", dayName: "Tue", day: 28, month: "April", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hurricanes", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Wolfpack", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-05-07", dayName: "Thu", day: 7, month: "May", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Tigers vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "1:00 PM", kid: "tommy", sport: "baseball", matchup: "Demon Deacons vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Cavaliers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Blue Devils", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+];
+
+// Convert "9:00 AM" style time to minutes for proper sorting
+function timeToMinutes(t) {
+  const [timePart, period] = t.split(' ');
+  let [h, m] = timePart.split(':').map(Number);
+  if (period === 'PM' && h !== 12) h += 12;
+  if (period === 'AM' && h === 12) h = 0;
+  return h * 60 + m;
+}
+
+// Sort by date, then by time (earliest first)
+games.sort((a, b) => {
+  if (a.date !== b.date) return a.date.localeCompare(b.date);
+  return timeToMinutes(a.time) - timeToMinutes(b.time);
+});
+
+const today = new Date().toISOString().slice(0, 10);
+
+function renderGames(filter = 'all') {
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  let currentMonth = '';
+
+  const filtered = filter === 'all' ? games : games.filter(g => g.kid === filter);
+
+  if (filtered.length === 0) {
+    timeline.innerHTML = '<div class="no-games">No games to show.</div>';
+    return;
+  }
+
+  // Find time conflicts: 2+ games at the same date+time
+  const timeSlots = {};
+  filtered.forEach(g => {
+    const key = `${g.date}|${g.time}`;
+    if (!timeSlots[key]) timeSlots[key] = [];
+    timeSlots[key].push(g.kid);
+  });
+  // Only flag slots with 2+ different kids
+  const conflictSlots = {};
+  Object.entries(timeSlots).forEach(([key, kids]) => {
+    const uniqueKids = [...new Set(kids)];
+    if (uniqueKids.length >= 2) conflictSlots[key] = uniqueKids.length;
+  });
+
+  let prevSlotKey = '';
+
+  filtered.forEach((g, i) => {
+    // Month header
+    if (g.month !== currentMonth) {
+      currentMonth = g.month;
+      const monthEl = document.createElement('div');
+      monthEl.className = 'month-label';
+      monthEl.textContent = currentMonth;
+      timeline.appendChild(monthEl);
+    }
+
+    // Time conflict note
+    const slotKey = `${g.date}|${g.time}`;
+    if (conflictSlots[slotKey] && slotKey !== prevSlotKey) {
+      const count = conflictSlots[slotKey];
+      const note = document.createElement('div');
+      note.className = 'same-day-note';
+      note.textContent = `⚡ ${count} games at the same time!`;
+      timeline.appendChild(note);
+    }
+    prevSlotKey = slotKey;
+
+    const isPast = g.date < today;
+
+    const card = document.createElement('div');
+    card.className = `game-card ${g.kid}${isPast ? ' past' : ''}`;
+    card.dataset.kid = g.kid;
+    card.style.animationDelay = `${i * 0.03}s`;
+
+    const sportIcon = g.sport === 'baseball' ? '⚾' : '⚽';
+
+    card.innerHTML = `
+      <div class="date-block">
+        <div class="day-name">${g.dayName}</div>
+        <div class="day-num">${g.day}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="game-info">
+        <div class="game-matchup">${highlightTeam(g.matchup, g.kid)}</div>
+        <div class="game-meta">
+          <span>🕐 ${g.time}</span>
+          <span>📍 ${g.location}</span>
+        </div>
+      </div>
+      <div class="badge ${g.kid}">${sportIcon} ${g.kid === 'tommy' ? 'Tommy' : 'Emma'}</div>
+    `;
+
+    timeline.appendChild(card);
+  });
+}
+
+function highlightTeam(matchup, kid) {
+  const team = kid === 'tommy' ? 'Golden Bears' : 'Tornados';
+  return matchup.replace(team, `<span class="team-name">${team}</span>`);
+}
+
+function filterGames(filter) {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.className = 'filter-btn';
+  });
+
+  const btns = document.querySelectorAll('.filter-btn');
+  if (filter === 'all') btns[0].classList.add('active-all');
+  else if (filter === 'tommy') btns[1].classList.add('active-tommy');
+  else btns[2].classList.add('active-emma');
+
+  renderGames(filter);
+}
+
+renderGames();
+</script>
+</body>
+</html>
