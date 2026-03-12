@@ -13,6 +13,9 @@
     --emma: #e85d75;
     --emma-light: #fde4e9;
     --emma-mid: #f5a3b5;
+    --avery: #16a34a;
+    --avery-light: #dcfce7;
+    --avery-mid: #86efac;
     --bg: #faf9f7;
     --card-bg: #ffffff;
     --text: #1e1e1e;
@@ -30,6 +33,29 @@
     color: var(--text);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('bg.jpg') top center / cover no-repeat;
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(250, 249, 247, 0.55);
+    z-index: -1;
   }
 
   .header {
@@ -44,6 +70,7 @@
     color: var(--text);
     letter-spacing: -0.5px;
     line-height: 1;
+    text-shadow: 0 1px 8px rgba(255,255,255,0.8);
   }
 
   .header p {
@@ -51,6 +78,7 @@
     color: var(--text-secondary);
     margin-top: 6px;
     font-weight: 400;
+    text-shadow: 0 1px 6px rgba(255,255,255,0.8);
   }
 
   /* Filters */
@@ -96,6 +124,12 @@
     border-color: var(--emma);
   }
 
+  .filter-btn.active-avery {
+    background: var(--avery);
+    color: white;
+    border-color: var(--avery);
+  }
+
   /* Legend */
   .legend {
     display: flex;
@@ -121,6 +155,7 @@
 
   .legend-dot.tommy { background: var(--tommy); }
   .legend-dot.emma { background: var(--emma); }
+  .legend-dot.avery { background: var(--avery); }
 
   /* Timeline */
   .timeline {
@@ -161,6 +196,7 @@
 
   .game-card.tommy { border-left-color: var(--tommy); }
   .game-card.emma { border-left-color: var(--emma); }
+  .game-card.avery { border-left-color: var(--avery); }
 
   .game-card.hidden {
     display: none;
@@ -193,6 +229,7 @@
 
   .game-card.tommy .date-block .day-num { color: var(--tommy); }
   .game-card.emma .date-block .day-num { color: var(--emma); }
+  .game-card.avery .date-block .day-num { color: var(--avery); }
 
   .divider {
     width: 1px;
@@ -255,6 +292,11 @@
     color: var(--emma);
   }
 
+  .badge.avery {
+    background: var(--avery-light);
+    color: var(--avery);
+  }
+
   .no-games {
     text-align: center;
     padding: 60px 24px;
@@ -270,7 +312,7 @@
   /* Same-day cluster */
   .same-day-note {
     display: inline-block;
-    background: linear-gradient(135deg, var(--tommy-light), var(--emma-light));
+    background: linear-gradient(135deg, var(--tommy-light), var(--emma-light), var(--avery-light));
     color: var(--text);
     font-size: 0.72rem;
     font-weight: 600;
@@ -346,18 +388,20 @@
 
 <div class="header">
   <h1>Game Day!</h1>
-  <p>Spring 2026 &middot; Tommy &amp; Emma's schedules</p>
+  <p>Spring 2026 &middot; Tommy, Emma &amp; Avery's schedules</p>
 </div>
 
 <div class="filters">
   <button class="filter-btn active-all" onclick="filterGames('all')">All Games</button>
   <button class="filter-btn" onclick="filterGames('tommy')">Tommy ⚾</button>
   <button class="filter-btn" onclick="filterGames('emma')">Emma ⚽</button>
+  <button class="filter-btn" onclick="filterGames('avery')">Avery 🥎</button>
 </div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Golden Bears</div>
   <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados</div>
+  <div class="legend-item"><div class="legend-dot avery"></div>Avery — Force</div>
 </div>
 
 <div class="download-all-wrap">
@@ -369,25 +413,35 @@
 <script>
 const games = [
   // === EMMA — SOCCER (Tornados) — Apex Nature Park Field #2, 2500 Evans Rd ===
-  { date: "2026-03-28", dayName: "Sat", day: 28, month: "March", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Monsoon", homeAway: "Home", location: "Apex Nature Park, Field #2" },
-  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Firestorm", homeAway: "Home", location: "Apex Nature Park, Field #2" },
-  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tsunami vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
-  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Earthquake", homeAway: "Home", location: "Apex Nature Park, Field #2" },
-  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Monsoon vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
-  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Firestorm vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
-  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Tsunami", homeAway: "Home", location: "Apex Nature Park, Field #2" },
-  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Volcanoes vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2" },
+  { date: "2026-03-28", dayName: "Sat", day: 28, month: "March", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Monsoon", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Firestorm", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tsunami vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Earthquake", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Monsoon vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Firestorm vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Tsunami", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
+  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Volcanoes vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
 
   // === TOMMY — BASEBALL (Golden Bears) — Baucom Elementary, 400 Hunter St ===
-  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Tar Heels vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hokies", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Fighting Irish vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-04-28", dayName: "Tue", day: 28, month: "April", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hurricanes", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Wolfpack", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-05-07", dayName: "Thu", day: 7, month: "May", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Tigers vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "1:00 PM", kid: "tommy", sport: "baseball", matchup: "Demon Deacons vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Cavaliers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
-  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Blue Devils", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St" },
+  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Tar Heels vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hokies", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Fighting Irish vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-04-28", dayName: "Tue", day: 28, month: "April", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hurricanes", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Wolfpack", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-05-07", dayName: "Thu", day: 7, month: "May", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Tigers vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "1:00 PM", kid: "tommy", sport: "baseball", matchup: "Demon Deacons vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Cavaliers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Blue Devils", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+
+  // === AVERY — SOFTBALL (Force) — Salem Middle School, 6150 Old Jenks Rd ===
+  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force at Wildcats", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "12:30 PM", kid: "avery", sport: "softball", matchup: "Force vs Charge", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-04-20", dayName: "Mon", day: 20, month: "April", time: "5:30 PM", kid: "avery", sport: "softball", matchup: "Force at Charge", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "12:30 PM", kid: "avery", sport: "softball", matchup: "Force vs Spirit", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "2:15 PM", kid: "avery", sport: "softball", matchup: "Force at Diamonds", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Wildcats", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-05-11", dayName: "Mon", day: 11, month: "May", time: "7:00 PM", kid: "avery", sport: "softball", matchup: "Force at Racers", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Diamonds", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
 ];
 
 // Convert "9:00 AM" style time to minutes for proper sorting
@@ -464,7 +518,11 @@ function renderGames(filter = 'all') {
     card.dataset.kid = g.kid;
     card.style.animationDelay = `${i * 0.03}s`;
 
-    const sportIcon = g.sport === 'baseball' ? '⚾' : '⚽';
+    const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎' };
+    const kidNames = { tommy: 'Tommy', emma: 'Emma', avery: 'Avery' };
+    const sportIcon = sportIcons[g.sport] || '🏅';
+    const kidName = kidNames[g.kid] || g.kid;
+    const practiceLabel = g.eventType === 'practice' ? ' · Practice' : '';
 
     const gameIndex = games.indexOf(g);
 
@@ -482,7 +540,7 @@ function renderGames(filter = 'all') {
         </div>
         <button class="cal-btn" onclick="event.stopPropagation(); downloadSingleGame(${gameIndex})">📅 Add to Cal</button>
       </div>
-      <div class="badge ${g.kid}">${sportIcon} ${g.kid === 'tommy' ? 'Tommy' : 'Emma'}</div>
+      <div class="badge ${g.kid}">${sportIcon} ${kidName}${practiceLabel}</div>
     `;
 
     timeline.appendChild(card);
@@ -490,7 +548,9 @@ function renderGames(filter = 'all') {
 }
 
 function highlightTeam(matchup, kid) {
-  const team = kid === 'tommy' ? 'Golden Bears' : 'Tornados';
+  const teams = { tommy: 'Golden Bears', emma: 'Tornados', avery: 'Force' };
+  const team = teams[kid];
+  if (!team) return matchup;
   return matchup.replace(team, `<span class="team-name">${team}</span>`);
 }
 
@@ -515,8 +575,10 @@ function gameToIcsDatetime(g) {
 
 function gameToVevent(g) {
   const { dtstart, dtend } = gameToIcsDatetime(g);
-  const kidName = g.kid === 'tommy' ? 'Tommy' : 'Emma';
-  const sportIcon = g.sport === 'baseball' ? '⚾' : '⚽';
+  const kidNames = { tommy: 'Tommy', emma: 'Emma', avery: 'Avery' };
+  const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎' };
+  const kidName = kidNames[g.kid] || g.kid;
+  const sportIcon = sportIcons[g.sport] || '🏅';
   const summary = `${sportIcon} ${kidName}: ${g.matchup}`;
   const uid = `${g.date}-${g.time.replace(/[: ]/g,'')}-${g.kid}@gamedayschedule`;
 
@@ -577,7 +639,8 @@ function downloadSingleGame(index) {
   const g = games[index];
   const vevent = gameToVevent(g);
   const ics = makeIcsFile([vevent]);
-  const kidName = g.kid === 'tommy' ? 'Tommy' : 'Emma';
+  const kidNames = { tommy: 'Tommy', emma: 'Emma', avery: 'Avery' };
+  const kidName = kidNames[g.kid] || g.kid;
   downloadIcs(ics, `${kidName}-${g.date}.ics`);
 }
 
@@ -595,7 +658,8 @@ function filterGames(filter) {
   const btns = document.querySelectorAll('.filter-btn');
   if (filter === 'all') btns[0].classList.add('active-all');
   else if (filter === 'tommy') btns[1].classList.add('active-tommy');
-  else btns[2].classList.add('active-emma');
+  else if (filter === 'emma') btns[2].classList.add('active-emma');
+  else if (filter === 'avery') btns[3].classList.add('active-avery');
 
   renderGames(filter);
 }
