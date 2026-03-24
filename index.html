@@ -375,8 +375,8 @@
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Golden Bears</div>
-  <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados</div>
-  <div class="legend-item"><div class="legend-dot avery"></div>Avery — Force</div>
+  <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados / Bengals</div>
+  <div class="legend-item"><div class="legend-dot avery"></div>Avery — Force / Chiefs</div>
 </div>
 
 <div class="download-all-wrap">
@@ -417,6 +417,24 @@ const games = [
   { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Wildcats", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
   { date: "2026-05-11", dayName: "Mon", day: 11, month: "May", time: "7:00 PM", kid: "avery", sport: "softball", matchup: "Force at Racers", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
   { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Diamonds", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+
+  // === EMMA — FLAG FOOTBALL (Bengals) — Pleasant Park, 3400 Pleasant Plains Rd ===
+  { date: "2026-03-27", dayName: "Fri", day: 27, month: "March", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals vs Seahawks", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
+  { date: "2026-04-10", dayName: "Fri", day: 10, month: "April", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals at Falcons", homeAway: "", location: "Pleasant Park, Field 9", eventType: "game" },
+  { date: "2026-04-17", dayName: "Fri", day: 17, month: "April", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals at Dolphins", homeAway: "", location: "Pleasant Park, Field 3", eventType: "game" },
+  { date: "2026-05-01", dayName: "Fri", day: 1, month: "May", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals at Cardinals", homeAway: "", location: "Pleasant Park, Field 2", eventType: "game" },
+  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals vs Rams", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
+  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals vs Packers", homeAway: "", location: "Pleasant Park, Field 3", eventType: "game" },
+  { date: "2026-05-15", dayName: "Fri", day: 15, month: "May", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals at Saints", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
+
+  // === AVERY — FLAG FOOTBALL (Chiefs) — Pleasant Park, 3400 Pleasant Plains Rd ===
+  { date: "2026-03-27", dayName: "Fri", day: 27, month: "March", time: "6:20 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Patriots", homeAway: "", location: "Pleasant Park, Field 1", eventType: "game" },
+  { date: "2026-04-10", dayName: "Fri", day: 10, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Eagles", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
+  { date: "2026-04-17", dayName: "Fri", day: 17, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Bills", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
+  { date: "2026-04-24", dayName: "Fri", day: 24, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Seahawks", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
+  { date: "2026-05-01", dayName: "Fri", day: 1, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Ravens", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
+  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Patriots", homeAway: "", location: "Pleasant Park, Field 9", eventType: "game" },
+  { date: "2026-05-15", dayName: "Fri", day: 15, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Eagles", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
 ];
 
 // Convert "9:00 AM" style time to minutes for proper sorting
@@ -493,7 +511,7 @@ function renderGames(filter = 'all') {
     card.dataset.kid = g.kid;
     card.style.animationDelay = `${i * 0.03}s`;
 
-    const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎' };
+    const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎', football: '🏈' };
     const kidNames = { tommy: 'Tommy', emma: 'Emma', avery: 'Avery' };
     const sportIcon = sportIcons[g.sport] || '🏅';
     const kidName = kidNames[g.kid] || g.kid;
@@ -523,10 +541,17 @@ function renderGames(filter = 'all') {
 }
 
 function highlightTeam(matchup, kid) {
-  const teams = { tommy: 'Golden Bears', emma: 'Tornados', avery: 'Force' };
-  const team = teams[kid];
-  if (!team) return matchup;
-  return matchup.replace(team, `<span class="team-name">${team}</span>`);
+  const teams = {
+    tommy: ['Golden Bears'],
+    emma: ['Tornados', 'Bengals'],
+    avery: ['Force', 'Chiefs']
+  };
+  const kidTeams = teams[kid] || [];
+  let result = matchup;
+  kidTeams.forEach(team => {
+    result = result.replace(team, `<span class="team-name">${team}</span>`);
+  });
+  return result;
 }
 
 // === iCal helpers ===
@@ -551,7 +576,7 @@ function gameToIcsDatetime(g) {
 function gameToVevent(g) {
   const { dtstart, dtend } = gameToIcsDatetime(g);
   const kidNames = { tommy: 'Tommy', emma: 'Emma', avery: 'Avery' };
-  const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎' };
+  const sportIcons = { baseball: '⚾', soccer: '⚽', softball: '🥎', football: '🏈' };
   const kidName = kidNames[g.kid] || g.kid;
   const sportIcon = sportIcons[g.sport] || '🏅';
   const summary = `${sportIcon} ${kidName}: ${g.matchup}`;
