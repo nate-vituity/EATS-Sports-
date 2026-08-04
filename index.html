@@ -363,7 +363,7 @@
 
 <div class="header">
   <h1>Game Day!</h1>
-  <p>Spring 2026 &middot; Tommy, Emma &amp; Avery's schedules</p>
+  <p>Fall 2026 &middot; Tommy, Emma &amp; Avery's schedules</p>
 </div>
 
 <div class="filters">
@@ -374,9 +374,9 @@
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Golden Bears</div>
-  <div class="legend-item"><div class="legend-dot emma"></div>Emma — Tornados / Bengals</div>
-  <div class="legend-item"><div class="legend-dot avery"></div>Avery — Force / Chiefs</div>
+  <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Spartans</div>
+  <div class="legend-item"><div class="legend-dot emma"></div>Emma — TBD</div>
+  <div class="legend-item"><div class="legend-dot avery"></div>Avery — Lasers</div>
 </div>
 
 <div class="download-all-wrap">
@@ -387,54 +387,26 @@
 
 <script>
 const games = [
-  // === EMMA — SOCCER (Tornados) — Apex Nature Park Field #2, 2500 Evans Rd ===
-  { date: "2026-03-28", dayName: "Sat", day: 28, month: "March", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Monsoon", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Firestorm", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tsunami vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Earthquake", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "emma", sport: "soccer", matchup: "Monsoon vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Firestorm vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Tornados vs Tsunami", homeAway: "Home", location: "Apex Nature Park, Field #2", eventType: "game" },
-  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Volcanoes vs Tornados", homeAway: "Away", location: "Apex Nature Park, Field #2", eventType: "game" },
+  // === TOMMY — BASEBALL (Spartans) — Baucom Elementary, 400 Hunter St ===
+  { date: "2026-08-22", dayName: "Sat", day: 22, month: "August", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans vs Wolverines", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-08-29", dayName: "Sat", day: 29, month: "August", time: "11:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans at Fighting Illini", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-09-12", dayName: "Sat", day: 12, month: "September", time: "11:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans vs Bruins", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-09-19", dayName: "Sat", day: 19, month: "September", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans at Huskers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-09-26", dayName: "Sat", day: 26, month: "September", time: "1:00 PM", kid: "tommy", sport: "baseball", matchup: "Spartans vs Boilermakers", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-09-29", dayName: "Tue", day: 29, month: "September", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Spartans at Hawkeyes", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-10-03", dayName: "Sat", day: 3, month: "October", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans at Golden Gophers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-10-06", dayName: "Tue", day: 6, month: "October", time: "6:00 PM", kid: "tommy", sport: "baseball", matchup: "Spartans vs Hoosiers", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
+  { date: "2026-10-10", dayName: "Sat", day: 10, month: "October", time: "11:00 AM", kid: "tommy", sport: "baseball", matchup: "Spartans at Nittany Lions", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
 
-  // === TOMMY — BASEBALL (Golden Bears) — Baucom Elementary, 400 Hunter St ===
-  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Tar Heels vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hokies", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "9:00 AM", kid: "tommy", sport: "baseball", matchup: "Fighting Irish vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-04-28", dayName: "Tue", day: 28, month: "April", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Hurricanes", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "10:00 AM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Wolfpack", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-05-07", dayName: "Thu", day: 7, month: "May", time: "7:00 PM", kid: "tommy", sport: "baseball", matchup: "Tigers vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "1:00 PM", kid: "tommy", sport: "baseball", matchup: "Demon Deacons vs Golden Bears", homeAway: "Home", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Cavaliers", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-  { date: "2026-05-30", dayName: "Sat", day: 30, month: "May", time: "12:00 PM", kid: "tommy", sport: "baseball", matchup: "Golden Bears vs Blue Devils", homeAway: "Away", location: "Baucom Elementary, 400 Hunter St", eventType: "game" },
-
-  // === AVERY — SOFTBALL (Force) — Salem Middle School, 6150 Old Jenks Rd ===
-  { date: "2026-04-11", dayName: "Sat", day: 11, month: "April", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force at Wildcats", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-04-18", dayName: "Sat", day: 18, month: "April", time: "12:30 PM", kid: "avery", sport: "softball", matchup: "Force vs Charge", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-04-20", dayName: "Mon", day: 20, month: "April", time: "5:30 PM", kid: "avery", sport: "softball", matchup: "Force at Charge", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-04-25", dayName: "Sat", day: 25, month: "April", time: "12:30 PM", kid: "avery", sport: "softball", matchup: "Force vs Spirit", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-05-02", dayName: "Sat", day: 2, month: "May", time: "2:15 PM", kid: "avery", sport: "softball", matchup: "Force at Diamonds", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-05-09", dayName: "Sat", day: 9, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Wildcats", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-05-11", dayName: "Mon", day: 11, month: "May", time: "7:00 PM", kid: "avery", sport: "softball", matchup: "Force at Racers", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-  { date: "2026-05-16", dayName: "Sat", day: 16, month: "May", time: "10:45 AM", kid: "avery", sport: "softball", matchup: "Force vs Diamonds", homeAway: "", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
-
-  // === EMMA — FLAG FOOTBALL (Bengals) — Pleasant Park, 3400 Pleasant Plains Rd ===
-  { date: "2026-03-27", dayName: "Fri", day: 27, month: "March", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals vs Seahawks", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
-  { date: "2026-04-10", dayName: "Fri", day: 10, month: "April", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals at Falcons", homeAway: "", location: "Pleasant Park, Field 9", eventType: "game" },
-  { date: "2026-04-17", dayName: "Fri", day: 17, month: "April", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals at Dolphins", homeAway: "", location: "Pleasant Park, Field 3", eventType: "game" },
-  { date: "2026-05-01", dayName: "Fri", day: 1, month: "May", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals at Cardinals", homeAway: "", location: "Pleasant Park, Field 2", eventType: "game" },
-  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals vs Rams", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
-  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "8:50 PM", kid: "emma", sport: "football", matchup: "Bengals vs Packers", homeAway: "", location: "Pleasant Park, Field 3", eventType: "game" },
-  { date: "2026-05-15", dayName: "Fri", day: 15, month: "May", time: "8:00 PM", kid: "emma", sport: "football", matchup: "Bengals at Saints", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
-
-  // === AVERY — FLAG FOOTBALL (Chiefs) — Pleasant Park, 3400 Pleasant Plains Rd ===
-  { date: "2026-03-27", dayName: "Fri", day: 27, month: "March", time: "6:20 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Patriots", homeAway: "", location: "Pleasant Park, Field 1", eventType: "game" },
-  { date: "2026-04-10", dayName: "Fri", day: 10, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Eagles", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
-  { date: "2026-04-17", dayName: "Fri", day: 17, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Bills", homeAway: "", location: "Pleasant Park, Field 8", eventType: "game" },
-  { date: "2026-04-24", dayName: "Fri", day: 24, month: "April", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Seahawks", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
-  { date: "2026-05-01", dayName: "Fri", day: 1, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Ravens", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
-  { date: "2026-05-08", dayName: "Fri", day: 8, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs at Patriots", homeAway: "", location: "Pleasant Park, Field 9", eventType: "game" },
-  { date: "2026-05-15", dayName: "Fri", day: 15, month: "May", time: "5:30 PM", kid: "avery", sport: "football", matchup: "Chiefs vs Eagles", homeAway: "", location: "Pleasant Park, Field 7", eventType: "game" },
+  // === AVERY — SOFTBALL (Lasers) — Salem Middle School (Small Field), 6150 Old Jenks Rd ===
+  { date: "2026-08-22", dayName: "Sat", day: 22, month: "August", time: "1:00 PM", kid: "avery", sport: "softball", matchup: "Bandits vs Lasers", homeAway: "Home", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-08-29", dayName: "Sat", day: 29, month: "August", time: "2:45 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Comets", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-09-12", dayName: "Sat", day: 12, month: "September", time: "1:00 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Peppers", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-09-19", dayName: "Sat", day: 19, month: "September", time: "1:00 PM", kid: "avery", sport: "softball", matchup: "Sunbirds vs Lasers", homeAway: "Home", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-09-21", dayName: "Mon", day: 21, month: "September", time: "6:00 PM", kid: "avery", sport: "softball", matchup: "Comets vs Lasers", homeAway: "Home", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-09-26", dayName: "Sat", day: 26, month: "September", time: "1:00 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Sunbirds", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-09-28", dayName: "Mon", day: 28, month: "September", time: "6:00 PM", kid: "avery", sport: "softball", matchup: "Riptide vs Lasers", homeAway: "Home", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+  { date: "2026-10-03", dayName: "Sat", day: 3, month: "October", time: "2:45 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Bandits", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
 ];
 
 // Convert "9:00 AM" style time to minutes for proper sorting
@@ -542,9 +514,9 @@ function renderGames(filter = 'all') {
 
 function highlightTeam(matchup, kid) {
   const teams = {
-    tommy: ['Golden Bears'],
-    emma: ['Tornados', 'Bengals'],
-    avery: ['Force', 'Chiefs']
+    tommy: ['Spartans'],
+    emma: [],
+    avery: ['Lasers']
   };
   const kidTeams = teams[kid] || [];
   let result = matchup;
@@ -647,7 +619,7 @@ function downloadSingleGame(index) {
 function downloadAllIcs() {
   const vevents = games.map(g => gameToVevent(g));
   const ics = makeIcsFile(vevents);
-  downloadIcs(ics, 'all-games-spring-2026.ics');
+  downloadIcs(ics, 'all-games-fall-2026.ics');
 }
 
 function filterGames(filter) {
