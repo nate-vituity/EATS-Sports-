@@ -375,7 +375,7 @@
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot tommy"></div>Tommy — Spartans</div>
-  <div class="legend-item"><div class="legend-dot emma"></div>Emma — TBD</div>
+  <div class="legend-item"><div class="legend-dot emma"></div>Emma — Rapids</div>
   <div class="legend-item"><div class="legend-dot avery"></div>Avery — Lasers</div>
 </div>
 
@@ -407,6 +407,16 @@ const games = [
   { date: "2026-09-26", dayName: "Sat", day: 26, month: "September", time: "1:00 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Sunbirds", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
   { date: "2026-09-28", dayName: "Mon", day: 28, month: "September", time: "6:00 PM", kid: "avery", sport: "softball", matchup: "Riptide vs Lasers", homeAway: "Home", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
   { date: "2026-10-03", dayName: "Sat", day: 3, month: "October", time: "2:45 PM", kid: "avery", sport: "softball", matchup: "Lasers vs Bandits", homeAway: "Away", location: "Salem Middle School, 6150 Old Jenks Rd", eventType: "game" },
+
+  // === EMMA — SOCCER (Rapids) — Pleasant Park, 3400 Pleasant Plains Rd ===
+  { date: "2026-09-12", dayName: "Sat", day: 12, month: "September", time: "12:00 PM", kid: "emma", sport: "soccer", matchup: "Rapids at Mountains", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-09-19", dayName: "Sat", day: 19, month: "September", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Rapids at Canyons", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-09-26", dayName: "Sat", day: 26, month: "September", time: "1:00 PM", kid: "emma", sport: "soccer", matchup: "Rapids vs Glaciers", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-10-03", dayName: "Sat", day: 3, month: "October", time: "12:00 PM", kid: "emma", sport: "soccer", matchup: "Rapids vs Whirlpools", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-10-10", dayName: "Sat", day: 10, month: "October", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Rapids vs Mountains", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-10-13", dayName: "Tue", day: 13, month: "October", time: "6:00 PM", kid: "emma", sport: "soccer", matchup: "Rapids vs Canyons", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-10-17", dayName: "Sat", day: 17, month: "October", time: "11:00 AM", kid: "emma", sport: "soccer", matchup: "Rapids at Glaciers", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
+  { date: "2026-10-24", dayName: "Sat", day: 24, month: "October", time: "12:00 PM", kid: "emma", sport: "soccer", matchup: "Rapids at Volcanos", homeAway: "", location: "Pleasant Park, Field 2A", eventType: "game" },
 ];
 
 // Convert "9:00 AM" style time to minutes for proper sorting
@@ -515,7 +525,7 @@ function renderGames(filter = 'all') {
 function highlightTeam(matchup, kid) {
   const teams = {
     tommy: ['Spartans'],
-    emma: [],
+    emma: ['Rapids'],
     avery: ['Lasers']
   };
   const kidTeams = teams[kid] || [];
